@@ -1,0 +1,84 @@
+{% extends "items/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}E-Market | Register{% endblock title %}
+
+{% block navigation %}{% endblock navigation %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center min-vh-100">
+        <!-- Registration Form Column -->
+        <div class="col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-sm border-1">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <img src="{% static 'admin/logo.png' %}" alt="E-Market Logo" style="height: 60px;">
+                    </div>
+                    <h2 class="text-center mb-4">Create an Account</h2>
+                    {% if messages %}
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ register_form.non_field_errors }}
+                        
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="{{ register_form.username.id_for_label }}" class="form-label">Username</label>
+                            {{ register_form.username }}
+                        </div>
+                    
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="{{ register_form.password1.id_for_label }}" class="form-label">Password</label>
+                            {{ register_form.password1 }}
+                        </div>
+                        
+                        <!-- Confirm Password -->
+                        <div class="mb-3">
+                            <label for="{{ register_form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+                            {{ register_form.password2 }}
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="{{ register_form.email.id_for_label }}" class="form-label">Email</label>
+                            {{ register_form.email }}
+                        </div>
+                       
+                        <!-- Role Dropdown -->
+                        <div class="mb-3">
+                            <label for="{{ register_form.role.id_for_label }}" class="form-label">Role</label>
+                            {{ register_form.role }}
+                        </div>
+                        
+                        <!-- Register Button -->
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">Register   <i class='fab fa-wpforms'></i></button>
+                        </div>
+                    </form>
+                    
+                    <!-- Already have an account -->
+                    <div class="text-center mt-4">
+                        <p>Already have an account? <a href="{% url "login" %}" class="text-decoration-none">Login here</a>.</p>
+                    </div>
+                    
+                    
+                    
+                    <!-- Continue as a Guest -->
+                    <div class="text-center mt-4">
+                        <p>Or</p>
+                        <a href="{% url "items:index" %}" class="btn btn-outline-secondary btn-sm">Continue as a Guest</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

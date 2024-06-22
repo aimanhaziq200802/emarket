@@ -1,0 +1,81 @@
+<!-- my_items.html -->
+{% extends "items/base.html" %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags %}
+            {% if 'success' in message.tags %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% elif 'error' in message.tags %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% elif 'info' in message.tags %}
+                <div class="alert alert-info" role="alert">
+                    {{ message }}
+                </div>
+            {% elif 'warning' in message.tags %}
+                <div class="alert alert-warning" role="alert">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div class="alert alert-secondary" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Your Items</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Product Name</th>
+            <th>Stock</th>
+            <th>Sold</th>
+            <th>Price</th>
+            <th>Discount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in seller_items %}
+            <tr>
+              <td><img src="{% if item.image %}{{ item.image.url }}{% else %}https://dummyimage.com/450x300/dee2e6/6c757d.jpg{% endif %}"
+                alt="{{ item.title }}" class="img-fluid" style="max-width: 50px;"></td>
+              <td>{{ item.title }}</td>
+              <td>{{ item.stock }}</td>
+              <td>{{ item.sold }}</td>
+              <td>{{ item.price }}</td>
+              <td>{% if item.is_on_sale %}{{ item.discount }}{% else %}No Discount{% endif %}</td>
+              <td>
+                {% if item.is_sold %}
+                  Sold
+                {% else %}
+                  {% if item.is_on_sale %}
+                    On Sale
+                  {% else %}
+                    Available
+                  {% endif %}
+                {% endif %}
+              </td>
+              <td>
+                <a href="{% url 'seller:edit_item' item.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <!-- Add more actions if needed -->
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

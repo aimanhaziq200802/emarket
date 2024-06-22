@@ -1,0 +1,122 @@
+{% extends "items/base.html" %}
+
+{% block stylesheets %}
+{{ block.super }}
+<style>
+    .custom-image-border {
+        /* border: 1px solid #000000; */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 100%;
+        height: auto;
+    }
+    .item-details {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .item-image {
+        flex: 1 1 40%;
+        padding: 20px;
+    }
+    .item-info {
+        flex: 1 1 55%;
+        padding: 20px;
+    }
+    .item-info h3 {
+        display: flex;
+        align-items: center;
+    }
+    .item-info h3 .badge {
+        margin-left: 10px;
+    }
+    .price {
+        font-size: 2em;
+        font-weight: bold;
+        color: #000000; /* Shopee's primary color */
+        margin-top: 10px;
+    }
+    .original-price {
+        font-size: 1em;
+        color: #999;
+        text-decoration: line-through;
+        margin-right: 10px;
+    }
+    .btn-add-to-cart {
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+    .btn-add-to-cart:hover {
+        background-color: #ffffff;
+        color: #0d6efd;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags %}
+      {% if 'success' in message.tags %}
+        <div class="alert alert-success" role="alert">
+          {{ message }}
+        </div>
+      {% elif 'error' in message.tags %}
+        <div class="alert alert-danger" role="alert">
+          {{ message }}
+        </div>
+      {% elif 'info' in message.tags %}
+        <div class="alert alert-info" role="alert">
+          {{ message }}
+        </div>
+      {% elif 'warning' in message.tags %}
+        <div class="alert alert-warning" role="alert">
+          {{ message }}
+        </div>
+      {% else %}
+        <div class="alert alert-secondary" role="alert">
+          {{ message }}
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+<div class="container my-5">
+    <div class="card shadow-sm border-1">
+        <div class="item-details">
+            <div class="item-image text-center">
+                <img src="{% if item.image %}{{ item.image.url }}{% else %}https://dummyimage.com/450x300/dee2e6/6c757d.jpg{% endif %}" class="custom-image-border" alt="Item Image">
+            </div>
+            <div class="item-info">
+                <h3 class="card-title">
+                    {{ item.title }} 
+                    <span class="badge bg-secondary">{{ item.category }}</span>
+                    {% if item.is_on_sale %}<span class="badge bg-danger">Sale!</span>{% endif %}
+                </h3>
+                <p class="card-text">{{ item.description }}</p>
+                <p class="card-text price">
+                    {% if item.is_on_sale %}
+                        <span class="original-price">RM{{ item.price }}</span>
+                        RM{{ item.discount|floatformat:2 }}
+                    {% else %}
+                        RM{{ item.price|floatformat:2 }}
+                    {% endif %}
+                </p>
+                <p class="card-text">Seller: {{ item.seller.username }}</p> <!-- Display seller's username -->
+                <p>Sold: {{ item.sold }}</p>
+                <p>Stock: {{ item.stock }}</p>
+                <p class="card-text"><small class="text-muted">Last updated {{ item.time_ago }} </small></p>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url "cart:add_to_cart" item.id %}" class="btn btn-primary btn-add-to-cart"><i class="bi bi-cart-plus"></i> Add to cart</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

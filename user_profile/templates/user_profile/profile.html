@@ -1,0 +1,105 @@
+{% extends "items/base.html" %}
+
+{% block stylesheets %}
+{{block.super}}
+<style>
+    .seller-actions {
+        margin-top: 20px;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<header class="bg-dark py-5">
+  <div class="container px-4 px-lg-5">
+      <div class="text-center text-white">
+          <h1 class="display-6">Profile</h1>
+      </div>
+  </div>
+</header>
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags %}
+            {% if 'success' in message.tags %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% elif 'error' in message.tags %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% elif 'info' in message.tags %}
+                <div class="alert alert-info" role="alert">
+                    {{ message }}
+                </div>
+            {% elif 'warning' in message.tags %}
+                <div class="alert alert-warning" role="alert">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div class="alert alert-secondary" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<section class="" style="background-color: #ffffff;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-6 mb-4 mb-lg-0">
+        <div class="card mb-3" style="border-radius: .5rem;">
+          <div class="row g-0">
+            <div class="col-md-4 gradient-custom text-center text-white pb-3"
+              style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+              <h5>{{ user.username|capfirst }}</h5>
+
+              <p>A wise customer</p>
+              <p>Location: {{ user.location }}</p>
+              
+              <a href="{% url 'user_profile:purchases' %}" class="btn btn-secondary">My Orders</a>
+              
+            </div>
+            <div class="col-md-8">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h6>Information</h6>
+                  <a href="{% url 'user_profile:edit_profile' %}" class="btn btn-primary">Edit Profile   <i class="bi bi-pen"></i></a>
+                </div>
+                <hr class="mt-0 mb-4">
+                <div class="row pt-1">
+                  <div class="col-6 mb-3">
+                    <h6>Email</h6>
+                    <p class="text-muted">{{user.email}}</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6>Phone</h6>
+                    <p class="text-muted">123 456 789</p>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-start">
+                  <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
+                  <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
+                  <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
+                </div>
+
+                {% if user.role == 'seller' %}
+                <div class="seller-actions mt-4">
+                  <h6>Seller Actions</h6>
+                  <a href="{% url 'seller:my_items' %}" class="btn btn-light w-100 mb-2">My Items</a>
+                  <a href="{% url 'seller:seller_orders' %}" class="btn btn-light w-100">Seller Orders</a>
+                </div>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

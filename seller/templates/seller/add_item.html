@@ -1,0 +1,49 @@
+{% extends "items/base.html" %}
+
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5">
+        <div class="text-center text-white">
+            <h1 class="display-6">Add Item</h1>
+        </div>
+    </div>
+</header>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-1">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4" style="text-decoration: underline;">Add New Item</h2>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.title.id_for_label }}" class="form-label">Item Name</label>
+                            {{ form.title }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">Item Description</label>
+                            {{ form.description }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.price.id_for_label }}" class="form-label">Price</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.image.id_for_label }}" class="form-label">Image</label>
+                            {{ form.image }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.category.id_for_label }}" class="form-label">Category</label>
+                            {{ form.category }}
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Add Item</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

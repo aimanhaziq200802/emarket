@@ -1,0 +1,37 @@
+.description-field textarea {
+    height: 50px;
+    box-sizing: border-box;
+    resize: vetical; 
+}
+
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #f6d365;
+    
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+    
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+}
+
+.alert-danger, .alert-success, .alert-info, .alert-warning {
+    width: auto; /* Adjust the width as needed */
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 0px; /* Center the alert horizontally */
+}
+
+.zoomed-out-card {
+    padding: 60px ; /* Adjust the scale factor as needed */
+}
+
+
+@media (max-width: 576px) {
+    .img-thumbnail-mobile {
+        max-width: 150px;
+        margin: auto;
+        display: block;
+    }
+}
+

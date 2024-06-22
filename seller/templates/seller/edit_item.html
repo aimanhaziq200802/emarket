@@ -1,0 +1,67 @@
+{% extends "items/base.html" %}
+
+{% block content %}
+
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-1">
+        <div class="card-body p-4">
+          <h2 class="text-center mb-4" >Edit Item</h2>
+          <div class="row">
+            <div class="col-md-5 text-center">
+              <!-- Image Preview -->
+              <img id="image-preview"
+                src="{% if item.image %}{{ item.image.url }}{% else %}https://dummyimage.com/450x300/dee2e6/6c757d.jpg{% endif %}"
+                alt="Image Preview" class="img-fluid rounded border border-1 border-dark">
+              
+            </div>
+            <div class="col-md-7">
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                  {{ form.title }}
+                </div>
+                <div class="mb-3">
+                  <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                  {{ form.description }}
+                </div>
+                <div class="mb-3">
+                  <label for="{{ form.price.id_for_label }}" class="form-label">Price</label>
+                  {{ form.price }}
+                </div>
+                <div class="mb-3">
+                  <label for="{{ form.category.id_for_label }}" class="form-label">Category</label>
+                  {{ form.category }}
+                </div>
+                <div class="mb-3">
+                  <label for="{{ form.stock.id_for_label }}" class="form-label">Stock</label>
+                  {{ form.stock }}
+                </div>
+                <div class="mb-3">
+                  <label for="{{ form.discount.id_for_label }}" class="form-label">Discount (0% - 100%)</label>
+                  {{ form.discount }}
+                  <p class="text-muted" style="font-size: 0.875rem;">* To apply a discount, the "Is On Sale" option must be ticked.</p>
+                </div>
+                <div class="mb-3 form-check">
+                  <label for="{{ form.is_on_sale.id_for_label }}" class="form-check-label">Is On Sale</label>
+                  {{ form.is_on_sale }}
+                </div>
+                <div class="mb-3 form-check">
+                  <label for="{{ form.is_sold.id_for_label }}" class="form-check-label">Is Sold</label>
+                  {{ form.is_sold }}
+                </div>
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

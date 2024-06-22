@@ -1,0 +1,116 @@
+{% extends "items/base.html" %}
+
+{% block stylesheets %}
+{{ block.super }}
+<style>
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+    }
+
+    .product-img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .product-details {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .product-footer {
+        padding: 1rem 0;
+    }
+
+    .badge {
+        margin-bottom: 0.5rem;
+    }
+
+    .product-title {
+        color: #333333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .product-price {
+        color: #ff4500; /* Dark Orange */
+    }
+
+    .product-discounted-price {
+        color: #ff4500; /* Dark Orange */
+    }
+
+    .product-original-price {
+        color: #666666; /* Gray */
+        text-decoration: line-through;
+    }
+
+    .product-title-container {
+        height: 1.5em; /* Adjust as necessary */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div id="new-arrivals" class="text-center my-5">
+  <h1>New Arrivals</h1>
+</div>
+
+<section class="product-section py-5">
+    <div class="container">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4 justify-content-center">
+            {% for item in items %}
+            <div class="col mb-4">
+                <div class="card h-100 product-card">
+                    <!-- Sale badge-->
+                    {% if item.is_on_sale %}
+                    <div class="badge bg-danger text-white position-absolute sale-badge">Sale</div>
+                    {% endif %}
+                    <!-- Product image-->
+                    <img class="card-img-top product-img"
+                        src="{% if item.image %}{{ item.image.url }}{% else %}https://dummyimage.com/450x300/dee2e6/6c757d.jpg{% endif %}"
+                        alt="{{ item.title }}" />
+                    <!-- Product details-->
+                    <div class="card-body p-4 product-details">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <div class="product-title-container">
+                                <h5 class="fw-bold product-title">{{ item.title }}</h5>
+                            </div>
+                            <br>
+                            <!-- Product price-->
+                            {% if item.is_on_sale %}
+                            <span class="product-original-price">RM{{ item.price|floatformat:2 }}</span>
+                            <span class="fw-bold product-discounted-price">RM{{ item.discounted_price|floatformat:2 }}</span>
+                            {% else %}
+                            <span class="fw product-price">RM{{ item.price|floatformat:2 }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                        
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent product-footer">
+                        <div class="text-center">
+                            <span class="badge bg-info text-white w-100 text-wrap" style="font-size: 0.9em;">Added: {{ item.time_ago }}</span>
+                            <br>
+                            <a class="btn btn-outline-dark mt-auto btn-details" href="{% url 'items:detail' item.id %}">More Detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

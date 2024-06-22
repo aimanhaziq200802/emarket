@@ -1,0 +1,75 @@
+{% extends "items/base.html" %}
+
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5">
+        <div class="text-center text-white">
+            <h1 class="display-6">My Orders</h1>
+        </div>
+    </div>
+</header>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div class="container px-4 px-lg-5 mt-5">
+    {% for receipt in receipts %}
+    <div class="row align-items-center border rounded mb-3 p-3">
+        <div class="col-md-3">
+            <div class="fw-bold">{{ receipt.buyer }}</div>
+            <div class="text-muted">{{ receipt.date }}</div>
+            <div>
+                Order Status: 
+                {% if receipt.status == 'Pending' %}
+                    <span class="badge bg-warning text-dark">{{ receipt.status|title }}</span>
+                {% elif receipt.status == 'Cancelled' %}
+                    <span class="badge bg-danger">{{ receipt.status|title }}</span>
+                {% elif receipt.status == 'Order Received' %}
+                    <span class="badge bg-success">{{ receipt.status|title }}</span>
+                {% else %}
+                    <span>{{ receipt.status }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <ul class="list-unstyled mb-0">
+                {% for item_status in receipt.item_statuses.all %}
+                <li>
+                    {{ item_status.item.title }} — x {{ item_status.quantity }} —
+                    {% if item_status.status == 'Pending' %}
+                        <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
+                    {% elif item_status.status == 'Out for Delivery' %}
+                        <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
+                    {% elif item_status.status == 'Completed' %}
+                        <span class="badge bg-success">{{ item_status.status|title }}</span>
+                    {% elif item_status.status == 'Delivered' %}
+                        <span class="badge bg-success">{{ item_status.status|title }}</span>
+                    {% else %}
+                        <span>{{ item_status.status }}</span>
+                    {% endif %}
+                    
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <span class="badge bg-success fs-6">Total: RM{{ receipt.total }}</span>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex justify-content-end">
+                {% if receipt.delivery_service %}
+                    <i class="bi bi-truck"></i>&nbsp;{{ receipt.delivery_service.username|capfirst }}
+                {% else %}
+                    <i class="bi bi-person"></i>&nbsp;Self-Pickup 
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

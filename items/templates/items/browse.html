@@ -1,0 +1,136 @@
+{% extends "items/base.html" %}
+
+{% block stylesheets %}
+{{ block.super }}
+<style>
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+    }
+
+    .product-img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .product-details {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .product-footer {
+        padding: 1rem 0;
+    }
+
+    .badge {
+        margin-bottom: 0.5rem;
+    }
+
+    .product-title {
+        color: #333333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .product-price {
+        color: #ff4500; /* Dark Orange */
+    }
+
+    .product-discounted-price {
+        color: #ff4500; /* Dark Orange */
+    }
+
+    .product-original-price {
+        color: #666666; /* Gray */
+        text-decoration: line-through;
+    }
+
+    .product-title-container {
+        height: 1.5em; /* Adjust as necessary */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container-fluid px-4 pt-5 pb-5 bg-light">
+    <div class="row gx-4 gx-lg-5">
+
+        <!-- Sidebar -->
+        <div class="col-md-3 mb-4">
+            <form action="{% url "items:browse" %}" method="get" class="search-form mb-4">
+                <input name="query" class="form-control py-3 px-4" type="text" value="{{query}}" placeholder="Search for items...">
+                <button class="btn btn-secondary mt-3">Search</button>
+            </form>
+
+            <hr class="my-4">
+
+            <h4 class="font-weight-bold mb-3">Categories</h4>
+            <div class="list-group">
+                {% for category in categories %}
+                    <a href="{% url 'items:browse' %}?query={{ query }}&category={{ category.id }}" class="list-group-item list-group-item-action mb-1 {% if category.id == category_id %} active {% endif %}">{{ category }}</a>
+                {% endfor %}
+            </div>
+
+            <hr class="my-4">
+
+            <a href="{% url 'items:browse' %}" class="btn btn-warning btn-block">Clear Filters</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
+                {% for item in items %}
+                <div class="col mb-4">
+                    <div class="card h-100 product-card">
+                        {% if item.is_on_sale %}
+                        <div class="badge bg-danger text-white position-absolute sale-badge">Sale</div>
+                        {% endif %}
+                        <div id="carousel{{ item.id }}" class="carousel slide">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100 product-img" src="{% if item.image %}{{ item.image.url }}{% else %}https://dummyimage.com/450x300/dee2e6/6c757d.jpg{% endif %}"
+                                    alt="{{ item.title }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-3 product-details">
+                            <div class="text-center">
+                                <div class="product-title-container">
+                                    <h5 class="fw-bold product-title">{{ item.title }}</h5>
+                                </div>
+                                <br>
+                                {% if item.is_on_sale %}
+                                    <span class="product-original-price">RM{{ item.price|floatformat:2 }}</span>
+                                    <span class="fw-bold product-discounted-price">RM{{ item.discounted_price|floatformat:2 }}</span>
+                                {% else %}
+                                    <span class="fw product-price">RM{{ item.price|floatformat:2 }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent product-footer">
+                            <div class="text-center">
+                                <span class="badge bg-success"><strong>Sold:</strong> {{ item.sold }}</span>
+                                <span class="badge bg-secondary"><strong>Stock:</strong> {{ item.stock }}</span>
+                                <br>
+                                <a class="btn btn-outline-dark mt-auto btn-details" href="{% url "items:detail" item.id %}">More Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,94 @@
+{% extends "items/base.html" %}
+{% block content %}
+
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5">
+        <div class="text-center text-white">
+            <h1 class="display-6">Seller Orders</h1>
+        </div>
+    </div>
+</header>
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags %}
+            {% if 'success' in message.tags %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% elif 'error' in message.tags %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% elif 'info' in message.tags %}
+                <div class="alert alert-info" role="alert">
+                    {{ message }}
+                </div>
+            {% elif 'warning' in message.tags %}
+                <div class="alert alert-warning" role="alert">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div class="alert alert-secondary" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            {% for item_status in seller_items %}
+                <div class="card border-light mb-3 shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-3 col-4">
+                            <img src="{{ item_status.item.image.url }}" class="img-fluid rounded-start" alt="" />
+                        </div>
+                        <div class="col-md-8 col-7">
+                            <div class="card-body">
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                                    <div>
+                                        <h5 class="card-title">{{ item_status.item.title }} x {{ item_status.quantity }}</h5>
+                                        <p class="card-text"><strong>Buyer:</strong> {{ item_status.receipt.buyer.username }}</p>
+                                        <p class="card-text"><strong>Status:</strong> {{ item_status.status }}</p>
+                                    </div>
+                                    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center mt-3 mt-md-0">
+                                        <form method="post" action="{% url 'cart:update_cart_item_status' item_status.id %}" class="me-2 mb-2 mb-md-0">
+                                            {% csrf_token %}
+                                            <select name="new_status" class="form-select form-select-sm d-inline w-auto mb-2 mb-md-0">
+                                                <option value="Pending" {% if item_status.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                                {% if item_status.receipt.delivery_service %}
+                                                    <option value="Out for Delivery" {% if item_status.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
+                                                {% else %}
+                                                    <option value="Completed" {% if item_status.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                                {% endif %}
+                                            </select>
+                                            <button type="submit" class="btn btn-primary btn-sm">Ok</button>
+                                        </form>
+                                        {% if item_status.status == 'Out for Delivery' %}
+                                            <form method="post" action="{% url 'cart:update_delivery_status' item_status.id %}">
+                                                {% csrf_token %}
+                                                <select name="new_status" class="form-select form-select-sm d-inline w-auto mb-2 mb-md-0">
+                                                    <option value="Pending" {% if item_status.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                                    <option value="Delivered" {% if item_status.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-primary btn-sm">Update Delivery Status</button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <p class="card-text"><small class="text-muted">Order placed on {{ item_status.receipt.date|date:"F j, Y, g:i a" }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

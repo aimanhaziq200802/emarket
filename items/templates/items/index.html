@@ -1,0 +1,90 @@
+{% extends "items/base.html" %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section bg-dark text-white py-5">
+    <div class="container text-center">
+        <h2 id="greeting-placeholder"></h2>
+        <h1 class="display-4 fw-bolder">Welcome to E-Market!</h1>
+        <p class="lead fw-normal text-white-50 mb-0">Find Everything You Want At A Good And Reasonable Price.</p>
+    </div>
+</section>
+
+<!-- Success Message Section -->
+{% if messages %}
+    <div class="container my-4">
+        {% for message in messages %}
+            {% if message.tags %}
+                <div class="alert alert-{{ message.tags }} role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<!-- Product Section -->
+<section class="product-section py-5">
+    <div class="container">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4 justify-content-center">
+            {% for item in items %}
+            <div class="col">
+                <div class="card h-100 product-card">
+                    <!-- Sale badge-->
+                    {% if item.is_on_sale %}
+                    <div class="badge bg-danger text-white position-absolute sale-badge">Sale</div>
+                    {% endif %}
+                    <!-- Product image-->
+                    <img class="card-img-top product-img" 
+                         src="{% if item.image %}{{ item.image.url }}{% else %}https://dummyimage.com/450x300/dee2e6/6c757d.jpg{% endif %}" 
+                         alt="{{ item.title }}" />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{ item.title }}</h5>
+                            <!-- Product price-->
+                            {% if item.is_on_sale %}
+                            <span class="text-muted text-decoration-line-through">RM{{ item.price|floatformat:2 }}</span>
+                            <span class="fw-bold text-danger">RM{{ item.discount|floatformat:2 }}</span>
+                            {% else %}
+                            <span class="fw-bold">RM{{ item.price|floatformat:2 }}</span>
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <span class="badge bg-success me-2"><strong>Sold:</strong> {{ item.sold }}</span>
+                            <span class="badge bg-secondary"><strong>Stock:</strong> {{ item.stock }}</span>
+                            <span class="badge bg-info text-white mt-2 w-100 text-wrap" style="font-size: 0.9em;">Added: {{ item.time_ago }}</span>
+                        <br><br>
+                        </div>
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto btn-details" href="{% url 'items:detail' item.id %}">More Detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let date = new Date();
+        let current_hour = date.getHours();
+        let greetingElement = document.getElementById('greeting-placeholder');
+        
+        if (current_hour < 12) {
+            greetingElement.textContent = "Good morning!👋";
+        } else {
+            greetingElement.textContent = "Good evening!👋";
+        }
+    });
+</script>
+
+{% endblock content %}

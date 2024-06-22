@@ -1,0 +1,39 @@
+{% extends "items/base.html" %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-sm border-1">
+          <div class="card-body p-4">
+            <h2 class="text-center mb-4">Edit Profile</h2>
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="mb-3">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+              </div>
+              <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+              </div>
+              <div class="mb-3">
+                {{ form.location.label_tag }}
+                {{ form.location }}
+              </div>
+              {% if user.role == 'seller' %}
+              <div class="mb-3">
+                {{ form.covered_locations.label_tag }} (Hold CTRL to select more than 1 location)
+                {{ form.covered_locations }}
+              </div>
+              {% endif %}
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
