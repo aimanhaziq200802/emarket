@@ -91,7 +91,8 @@
                             {% else %}
                             <span class="fw product-price">RM{{ item.price|floatformat:2 }}</span>
                             {% endif %}
-                            <span class="badge bg-info text-white w-100 text-wrap">Added: {{ item.time_ago }}</span>
+                            <br>
+                            <span class="badge bg-info text-white text-wrap">Added: {{ item.time_ago }}</span>
                             <br>
                             <a class="btn btn-outline-dark mt-auto btn-details" href="{% url 'items:detail' item.id %}">More Detail</a>
                         </div>

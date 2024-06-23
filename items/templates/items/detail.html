@@ -27,9 +27,11 @@
     .item-info h3 {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
     }
     .item-info h3 .badge {
         margin-left: 10px;
+        white-space: nowrap;
     }
     .price {
         font-size: 2em;
@@ -51,6 +53,21 @@
     .btn-add-to-cart:hover {
         background-color: #ffffff;
         color: #0d6efd;
+    }
+
+    @media (max-width: 576px) {
+        .item-image, .item-info {
+            flex: 1 1 100%;
+            text-align: center;
+            padding: 10px;
+        }
+        .item-info h3 {
+            flex-direction: column;
+            align-items: center;
+        }
+        .item-info h3 .badge {
+            margin: 5px 0;
+        }
     }
 </style>
 {% endblock stylesheets %}
@@ -95,7 +112,9 @@
                 <h3 class="card-title">
                     {{ item.title }} 
                     <span class="badge bg-secondary">{{ item.category }}</span>
-                    {% if item.is_on_sale %}<span class="badge bg-danger">Sale!</span>{% endif %}
+                    {% if item.is_on_sale %}
+                    <span class="badge bg-danger">Sale!</span>
+                    {% endif %}
                 </h3>
                 <p class="card-text">{{ item.description }}</p>
                 <p class="card-text price">
@@ -107,10 +126,10 @@
                     {% endif %}
                 </p>
                 <p class="card-text">Seller: {{ item.seller.username }}</p> <!-- Display seller's username -->
-                <p>Sold: {{ item.sold }}</p>
-                <p>Stock: {{ item.stock }}</p>
-                <p class="card-text"><small class="text-muted">Last updated {{ item.time_ago }} </small></p>
-
+                <span class="badge bg-success"><strong>Sold:</strong> {{ item.sold }}</span>
+                <span class="badge bg-secondary"><strong>Stock:</strong> {{ item.stock }}</span>
+                <span class="badge bg-info text-white mt-2 mb-2 text-wrap">Added: {{ item.time_ago }}</span>
+                <br>
                 {% if user.is_authenticated %}
                     <a href="{% url "cart:add_to_cart" item.id %}" class="btn btn-primary btn-add-to-cart"><i class="bi bi-cart-plus"></i> Add to cart</a>
                 {% endif %}

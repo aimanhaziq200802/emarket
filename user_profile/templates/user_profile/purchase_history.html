@@ -36,7 +36,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <ul class="list-unstyled mb-0">
                 {% for item_status in receipt.item_statuses.all %}
                 <li>
@@ -60,7 +60,7 @@
         <div class="col-md-2">
             <span class="badge bg-success fs-6">Total: RM{{ receipt.total }}</span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="d-flex justify-content-end">
                 {% if receipt.delivery_service %}
                     <i class="bi bi-truck"></i>&nbsp;{{ receipt.delivery_service.username|capfirst }}
