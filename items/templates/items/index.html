@@ -1,7 +1,11 @@
 {% extends "items/base.html" %}
 
 {% block content %}
-
+<style>
+    .product-price {
+        color: #ff4500; /* Dark Orange */
+    }
+</style>
 <!-- Hero Section -->
 <section class="hero-section bg-dark text-white py-5">
     <div class="container text-center">
@@ -40,27 +44,27 @@
                          src="{% if item.image %}{{ item.image.url }}{% else %}https://dummyimage.com/450x300/dee2e6/6c757d.jpg{% endif %}" 
                          alt="{{ item.title }}" />
                     <!-- Product details-->
-                    <div class="card-body p-4">
+                    <div class="card-body">
                         <div class="text-center">
                             <!-- Product name-->
                             <h5 class="fw-bolder">{{ item.title }}</h5>
-                            <!-- Product price-->
-                            {% if item.is_on_sale %}
-                            <span class="text-muted text-decoration-line-through">RM{{ item.price|floatformat:2 }}</span>
-                            <span class="fw-bold text-danger">RM{{ item.discount|floatformat:2 }}</span>
-                            {% else %}
-                            <span class="fw-bold">RM{{ item.price|floatformat:2 }}</span>
-                            {% endif %}
-                            
                         </div>
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                         <div class="text-center">
-                            <span class="badge bg-success me-2"><strong>Sold:</strong> {{ item.sold }}</span>
+                            <!-- Product price-->
+                            {% if item.is_on_sale %}
+                            <span class="text-muted text-decoration-line-through">RM{{ item.price|floatformat:2 }}</span>
+                            <span class="fw-bold text-danger">RM{{ item.discount|floatformat:2 }}</span>
+                            {% else %}
+                            <span class="fw product-price">RM{{ item.price|floatformat:2 }}</span>
+                            {% endif %}
+                            <br>
+                            <span class="badge bg-success"><strong>Sold:</strong> {{ item.sold }}</span>
                             <span class="badge bg-secondary"><strong>Stock:</strong> {{ item.stock }}</span>
-                            <span class="badge bg-info text-white mt-2 w-100 text-wrap" style="font-size: 0.9em;">Added: {{ item.time_ago }}</span>
-                        <br><br>
+                            <span class="badge bg-info text-white mt-2 mb-2 text-wrap">Added: {{ item.time_ago }}</span>
+                            <br>
                         </div>
                         <div class="text-center">
                             <a class="btn btn-outline-dark mt-auto btn-details" href="{% url 'items:detail' item.id %}">More Detail</a>

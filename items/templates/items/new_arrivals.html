@@ -33,9 +33,6 @@
 
     .product-title {
         color: #333333;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
     }
 
     .product-price {
@@ -51,12 +48,7 @@
         text-decoration: line-through;
     }
 
-    .product-title-container {
-        height: 1.5em; /* Adjust as necessary */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+
 </style>
 {% endblock stylesheets %}
 
@@ -81,13 +73,17 @@
                         src="{% if item.image %}{{ item.image.url }}{% else %}https://dummyimage.com/450x300/dee2e6/6c757d.jpg{% endif %}"
                         alt="{{ item.title }}" />
                     <!-- Product details-->
-                    <div class="card-body p-4 product-details">
+                    <div class="card-body product-details">
                         <div class="text-center">
                             <!-- Product name-->
-                            <div class="product-title-container">
-                                <h5 class="fw-bold product-title">{{ item.title }}</h5>
-                            </div>
-                            <br>
+                            <h5 class="fw-bold product-title">{{ item.title }}</h5>
+    
+                        </div>
+                    </div>
+                        
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent product-footer">
+                        <div class="text-center">
                             <!-- Product price-->
                             {% if item.is_on_sale %}
                             <span class="product-original-price">RM{{ item.price|floatformat:2 }}</span>
@@ -95,13 +91,7 @@
                             {% else %}
                             <span class="fw product-price">RM{{ item.price|floatformat:2 }}</span>
                             {% endif %}
-                        </div>
-                    </div>
-                        
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent product-footer">
-                        <div class="text-center">
-                            <span class="badge bg-info text-white w-100 text-wrap" style="font-size: 0.9em;">Added: {{ item.time_ago }}</span>
+                            <span class="badge bg-info text-white w-100 text-wrap">Added: {{ item.time_ago }}</span>
                             <br>
                             <a class="btn btn-outline-dark mt-auto btn-details" href="{% url 'items:detail' item.id %}">More Detail</a>
                         </div>

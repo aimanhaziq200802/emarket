@@ -33,9 +33,7 @@
 
     .product-title {
         color: #333333;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+
     }
 
     .product-price {
@@ -51,12 +49,6 @@
         text-decoration: line-through;
     }
 
-    .product-title-container {
-        height: 1.5em; /* Adjust as necessary */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
 </style>
 {% endblock stylesheets %}
 
@@ -84,10 +76,13 @@
                     <div class="card-body p-4 product-details">
                         <div class="text-center">
                             <!-- Product name-->
-                            <div class="product-title-container">
-                                <h5 class="fw-bold product-title">{{ item.title }}</h5>
-                            </div>
-                            <br>
+                            <h5 class="fw-bold product-title">{{ item.title }}</h5>   
+                        </div>
+                    </div>
+                        
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent product-footer">
+                        <div class="text-center">
                             <!-- Product price-->
                             {% if item.is_on_sale %}
                             <span class="product-original-price">RM{{ item.price|floatformat:2 }}</span>
@@ -95,12 +90,7 @@
                             {% else %}
                             <span class="fw product-price">RM{{ item.price|floatformat:2 }}</span>
                             {% endif %}
-                        </div>
-                    </div>
-                        
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent product-footer">
-                        <div class="text-center">
+                            <br>
                             <span class="badge bg-success"><strong>Sold:</strong> {{ item.sold }}</span>
                             <span class="badge bg-secondary"><strong>Stock:</strong> {{ item.stock }}</span>
                             <br>
