@@ -59,13 +59,15 @@ class Item(models.Model):
 class ItemStatus(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
+        ('Ready for Pickup', 'Ready for Pickup'),
+        ('Ready for Delivery', 'Ready for Delivery'),
         ('Out for Delivery', 'Out for Delivery'),
         ('Delivered', 'Delivered'),
         ('Completed', 'Completed'),
     ]
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="item_statuses")
     receipt = models.ForeignKey('PurchaseReceipt', on_delete=models.CASCADE, related_name="item_statuses")
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(default=timezone.now) 
 

@@ -43,6 +43,13 @@
                     {{ item_status.item.title }} — x {{ item_status.quantity }} —
                     {% if item_status.status == 'Pending' %}
                         <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
+                    {% elif item_status.status == 'Ready for Pickup' %}
+                        <span class="badge bg-info text-dark">{{ item_status.status|title }}</span><br>
+                        <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#pickupAddressModal{{ item_status.id }}">
+                            <i class="bi bi-info-circle"></i> View Pickup Address
+                        </button>
+                    {% elif item_status.status == 'Ready for Delivery' %}
+                        <span class="badge bg-info text-dark">{{ item_status.status|title }}</span>
                     {% elif item_status.status == 'Out for Delivery' %}
                         <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
                     {% elif item_status.status == 'Completed' %}
@@ -53,6 +60,23 @@
                         <span>{{ item_status.status }}</span>
                     {% endif %}
                     
+                    <!-- Modal for Pickup Address -->
+                    <div class="modal fade" id="pickupAddressModal{{ item_status.id }}" tabindex="-1" aria-labelledby="pickupAddressModalLabel{{ item_status.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="pickupAddressModalLabel{{ item_status.id }}">Pickup Address</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{ item_status.item.seller.address }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
@@ -63,7 +87,11 @@
         <div class="col-md-2">
             <div class="d-flex justify-content-end">
                 {% if receipt.delivery_service %}
-                    <i class="bi bi-truck"></i>&nbsp;{{ receipt.delivery_service.username|capfirst }}
+                    {% if receipt.delivery_service.username %}
+                        <i class="bi bi-truck"></i>&nbsp;{{ receipt.delivery_service.username|capfirst }}
+                    {% else %}
+                        <i class="bi bi-truck"></i>&nbsp;Awaiting Pickup
+                    {% endif %}
                 {% else %}
                     <i class="bi bi-person"></i>&nbsp;Self-Pickup 
                 {% endif %}

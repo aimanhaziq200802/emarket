@@ -53,30 +53,33 @@
                                         <h5 class="card-title">{{ item_status.item.title }} x {{ item_status.quantity }}</h5>
                                         <p class="card-text"><strong>Buyer:</strong> {{ item_status.receipt.buyer.username }}</p>
                                         <p class="card-text"><strong>Status:</strong> {{ item_status.status }}</p>
+                                        {% if item_status.receipt.delivery_service %}
+                                            <p class="card-text"><strong>Delivery Name:</strong> {{ item_status.receipt.delivery_service.username }}</p>
+                                        {% endif %}
                                     </div>
                                     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center mt-3 mt-md-0">
                                         <form method="post" action="{% url 'cart:update_cart_item_status' item_status.id %}" class="me-2 mb-2 mb-md-0">
                                             {% csrf_token %}
                                             <select name="new_status" class="form-select form-select-sm d-inline w-auto mb-2 mb-md-0">
-                                                <option value="Pending" {% if item_status.status == 'Pending' %}selected{% endif %}>Pending</option>
-                                                {% if item_status.receipt.delivery_service %}
+                                                {% if item_status.status == 'Pending' %}
+                                                    <option value="Pending" {% if item_status.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                                    {% if not item_status.receipt.delivery_service %}
+                                                        <option value="Ready for Pickup" {% if item_status.status == 'Ready for Pickup' %}selected{% endif %}>Ready for Pickup</option>
+                                                    {% else %}
+                                                        <option value="Ready for Delivery" {% if item_status.status == 'Ready for Delivery' %}selected{% endif %}>Ready for Delivery</option>
+                                                    {% endif %}
+                                                {% elif item_status.status == 'Ready for Pickup' %}
+                                                    <option value="Ready for Pickup" {% if item_status.status == 'Ready for Pickup' %}selected{% endif %}>Ready for Pickup</option>
+                                                    <option value="Completed" {% if item_status.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                                {% elif item_status.status == 'Ready for Delivery' %}
+                                                    <option value="Ready for Delivery" {% if item_status.status == 'Ready for Delivery' %}selected{% endif %}>Ready for Delivery</option>
                                                     <option value="Out for Delivery" {% if item_status.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
                                                 {% else %}
-                                                    <option value="Completed" {% if item_status.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                                    <option value="{{ item_status.status }}" {% if item_status.status == item_status.status %}selected{% endif %}>{{ item_status.status }}</option>
                                                 {% endif %}
                                             </select>
                                             <button type="submit" class="btn btn-primary btn-sm">Ok</button>
                                         </form>
-                                        {% if item_status.status == 'Out for Delivery' %}
-                                            <form method="post" action="{% url 'cart:update_delivery_status' item_status.id %}">
-                                                {% csrf_token %}
-                                                <select name="new_status" class="form-select form-select-sm d-inline w-auto mb-2 mb-md-0">
-                                                    <option value="Pending" {% if item_status.status == 'Pending' %}selected{% endif %}>Pending</option>
-                                                    <option value="Delivered" {% if item_status.status == 'Delivered' %}selected{% endif %}>Delivered</option>
-                                                </select>
-                                                <button type="submit" class="btn btn-primary btn-sm">Update Delivery Status</button>
-                                            </form>
-                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

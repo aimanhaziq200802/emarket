@@ -10,6 +10,7 @@ class CartItem(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
+        ('Ready for Pickup', 'Ready for Pickup'),
         ('Confirmed', 'Confirmed'),
         ('Out for Delivery', 'Out for Delivery'),
         ('Delivered', 'Delivered'),

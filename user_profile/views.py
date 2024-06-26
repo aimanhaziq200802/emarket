@@ -98,3 +98,4 @@ def seller_orders(request):
     if not seller_items:
         messages.info(request, 'No pending items found for this seller.')
     return render(request, 'user_profile/seller_orders.html', {'seller_items': seller_items})
+

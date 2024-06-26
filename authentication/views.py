@@ -50,3 +50,4 @@ def user_register(request):
     else:
         form = RegisterUserForm()
     return render(request, 'authentication/register.html', {'register_form': form})
+

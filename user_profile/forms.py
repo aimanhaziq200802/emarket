@@ -24,7 +24,7 @@ class ItemForm(forms.ModelForm):
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'location', 'covered_locations']
+        fields = ['username', 'email', 'location', 'covered_locations', 'role', 'address']
         
     def __init__(self, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
@@ -32,4 +32,8 @@ class EditProfileForm(forms.ModelForm):
         self.fields['email'].widget.attrs.update({'class': 'form-control form-control-lg'})
         self.fields['location'].widget.attrs.update({'class': 'form-control form-control-lg'})
         self.fields['covered_locations'].widget.attrs.update({'class': 'form-control form-control-lg'})
-        self.fields['covered_locations'].widget.attrs['multiple'] = 'multiple'  # This is needed if you use a multi-select
+        self.fields['covered_locations'].widget.attrs['multiple'] = 'multiple' 
+        self.fields['role'].widget.attrs.update({'class': 'form-control form-control-lg'})
+        self.fields['address'].widget.attrs.update({'class': 'form-control form-control-lg'})
+
+        self.fields['location'].label = "Select a Location (for Optimized Results)"

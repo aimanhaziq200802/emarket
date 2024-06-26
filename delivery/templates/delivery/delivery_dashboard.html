@@ -53,19 +53,23 @@
                                         <h5 class="card-title">{{ item_status.item.title }} x {{ item_status.quantity }}</h5>
                                         <p class="card-text"><strong>Buyer:</strong> {{ item_status.receipt.buyer.username }}</p>
                                         <p class="card-text"><strong>Status:</strong> {{ item_status.status }}</p>
+                                        <p class="card-text"><strong>Seller Address:</strong> <a href="#" data-bs-toggle="modal" data-bs-target="#sellerAddressModal{{ item_status.id }}">View Seller Address</a></p>
+                                        <p class="card-text"><strong>Buyer Address:</strong> <a href="#" data-bs-toggle="modal" data-bs-target="#buyerAddressModal{{ item_status.id }}">View Buyer Address</a></p>
                                     </div>
                                     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center mt-3 mt-md-0">
-                                        
-                                        {% if item_status.status == 'Out for Delivery' %}
-                                            <form method="post" action="{% url 'cart:update_delivery_status' item_status.id %}">
-                                                {% csrf_token %}
-                                                <select name="new_status" class="form-select form-select-sm d-inline w-auto mb-2 mb-md-0">
-                                                    <option value="Pending" {% if item_status.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                        <form method="post" action="{% url 'cart:update_delivery_status' item_status.id %}">
+                                            {% csrf_token %}
+                                            <select name="new_status" class="form-select form-select-sm d-inline w-auto mb-2 mb-md-0">
+                                                {% if item_status.status == 'Ready for Delivery' %}
+                                                    <option value="Ready for Delivery" {% if item_status.status == 'Ready for Delivery' %}selected{% endif %}>Ready for Delivery</option>
+                                                    <option value="Out for Delivery" {% if item_status.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
+                                                {% elif item_status.status == 'Out for Delivery' %}
+                                                    <option value="Out for Delivery" {% if item_status.status == 'Out for Delivery' %}selected{% endif %}>Out for Delivery</option>
                                                     <option value="Delivered" {% if item_status.status == 'Delivered' %}selected{% endif %}>Delivered</option>
-                                                </select>
-                                                <button type="submit" class="btn btn-primary btn-sm">OK</button>
-                                            </form>
-                                        {% endif %}
+                                                {% endif %}
+                                            </select>
+                                            <button type="submit" class="btn btn-primary btn-sm">OK</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -75,6 +79,43 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal for Seller Address -->
+                <div class="modal fade" id="sellerAddressModal{{ item_status.id }}" tabindex="-1" aria-labelledby="sellerAddressModalLabel{{ item_status.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="sellerAddressModalLabel{{ item_status.id }}">Seller Address</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ item_status.item.seller.address }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal for Buyer Address -->
+                <div class="modal fade" id="buyerAddressModal{{ item_status.id }}" tabindex="-1" aria-labelledby="buyerAddressModalLabel{{ item_status.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="buyerAddressModalLabel{{ item_status.id }}">Buyer Address</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ item_status.receipt.buyer.address }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             {% endfor %}
         </div>
     </div>

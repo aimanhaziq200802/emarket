@@ -17,16 +17,29 @@
                 {{ form.email.label_tag }}
                 {{ form.email }}
               </div>
+
+              {% if not user.is_staff %}
               <div class="mb-3">
                 {{ form.location.label_tag }}
                 {{ form.location }}
               </div>
+              <div class="mb-3">
+                {{ form.role.label_tag }}
+                {{ form.role }}
+              </div>
+              {% endif %}
+
               {% if user.role == 'seller' %}
               <div class="mb-3">
                 {{ form.covered_locations.label_tag }} (Hold CTRL to select more than 1 location)
                 {{ form.covered_locations }}
               </div>
               {% endif %}
+              <div class="mb-3">
+                {{ form.address.label_tag }}
+                {{ form.address }}
+              </div>
+
               <div class="d-grid">
                 <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
               </div>

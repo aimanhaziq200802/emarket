@@ -34,9 +34,14 @@ class RegisterUserForm(UserCreationForm):
         strip=False,
     )
 
+    address = forms.CharField(
+        label='Address',
+        widget=forms.TextInput(attrs={'class': 'form-control form-control-lg', 'autocomplete': 'off'}),
+    )
+
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'password1', 'password2', 'location', 'role']
+        fields = ['username', 'email', 'password1', 'password2', 'location', 'role', 'address']
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'autocomplete': 'off'}),
             'email': forms.EmailInput(attrs={'class': 'form-control form-control-lg', 'autocomplete': 'off'}),

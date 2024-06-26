@@ -11,7 +11,12 @@ def delivery_dashboard(request):
         messages.error(request, 'You do not have permission to view this page.')
         return redirect('items:index')
 
-    delivery_items = ItemStatus.objects.filter(status='Out for Delivery', receipt__delivery_service=request.user)
+    delivery_items = ItemStatus.objects.filter(
+        receipt__delivery_service=request.user,
+        status__in=['Ready for Delivery', 'Out for Delivery']
+    )
+    
     if not delivery_items:
         messages.info(request, 'No items found for delivery.')
+        
     return render(request, 'delivery/delivery_dashboard.html', {'delivery_items': delivery_items})

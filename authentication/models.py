@@ -16,3 +16,4 @@ class CustomUser(AbstractUser):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='buyer')
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     covered_locations = models.ManyToManyField(Location, related_name='sellers', blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)

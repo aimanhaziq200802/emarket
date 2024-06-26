@@ -62,8 +62,10 @@ def seller_orders(request):
         messages.error(request, 'You do not have permission to view this page.')
         return redirect('items:index')
 
-    # Fetch only pending items for the seller
-    seller_items = ItemStatus.objects.filter(item__seller=request.user, status='Pending').order_by('created_at')
+    # Fetch items with status 'Pending' or 'Ready for Pickup' for the seller
+    seller_items = ItemStatus.objects.filter(item__seller=request.user, status__in=['Pending', 'Ready for Pickup']).order_by('created_at')
+    
     if not seller_items:
-        messages.info(request, 'No pending items found for this seller.')
+        messages.info(request, 'No pending or ready for pickup items found for this seller.')
+    
     return render(request, 'seller/seller_orders.html', {'seller_items': seller_items})
