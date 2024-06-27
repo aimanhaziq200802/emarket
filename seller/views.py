@@ -62,10 +62,12 @@ def seller_orders(request):
         messages.error(request, 'You do not have permission to view this page.')
         return redirect('items:index')
 
-    # Fetch items with status 'Pending' or 'Ready for Pickup' for the seller
-    seller_items = ItemStatus.objects.filter(item__seller=request.user, status__in=['Pending', 'Ready for Pickup']).order_by('created_at')
-    
-    if not seller_items:
-        messages.info(request, 'No pending or ready for pickup items found for this seller.')
-    
-    return render(request, 'seller/seller_orders.html', {'seller_items': seller_items})
+    current_orders = ItemStatus.objects.filter(item__seller=request.user).exclude(status__in=['Completed', 'Delivered']).order_by('created_at')
+    order_history = ItemStatus.objects.filter(item__seller=request.user, status__in=['Completed', 'Delivered']).order_by('-created_at')
+
+    if not current_orders:
+        messages.info(request, 'No current orders found for this seller.')
+    if not order_history:
+        messages.info(request, 'No order history found for this seller.')
+
+    return render(request, 'seller/seller_orders.html', {'current_orders': current_orders, 'order_history': order_history})

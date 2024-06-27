@@ -40,7 +40,8 @@
 <div class="container my-5">
     <div class="row">
         <div class="col-md-12">
-            {% for item_status in seller_items %}
+            <h2>Pending Orders</h2>
+            {% for item_status in current_orders %}
                 <div class="card border-light mb-3 shadow-sm">
                     <div class="row g-0">
                         <div class="col-md-3 col-4">
@@ -52,11 +53,27 @@
                                     <div>
                                         <h5 class="card-title">{{ item_status.item.title }} x {{ item_status.quantity }}</h5>
                                         <p class="card-text"><strong>Buyer:</strong> {{ item_status.receipt.buyer.username }}</p>
-                                        <p class="card-text"><strong>Status:</strong> {{ item_status.status }}</p>
+                                        <p class="card-text"><strong>Status:</strong>
+                                            {% if item_status.status == 'Pending' %}
+                                                <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
+                                            {% elif item_status.status == 'Ready for Pickup' %}
+                                                <span class="badge bg-info text-dark">{{ item_status.status|title }}</span><br>
+                                                
+                                            {% elif item_status.status == 'Ready for Delivery' %}
+                                                <span class="badge bg-info text-dark">{{ item_status.status|title }}</span>
+                                            {% elif item_status.status == 'Out for Delivery' %}
+                                                <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
+                                            {% elif item_status.status == 'Completed' %}
+                                                <span class="badge bg-success">{{ item_status.status|title }}</span>
+                                            {% elif item_status.status == 'Delivered' %}
+                                                <span class="badge bg-success">{{ item_status.status|title }}</span>
+                                            {% else %}
+                                                <span>{{ item_status.status }}</span>
+                                            {% endif %}
+                                        </p>                                        
                                         {% if item_status.receipt.delivery_service %}
-                                            <p class="card-text"><strong>Delivery Name:</strong> {{ item_status.receipt.delivery_service.username }}</p>
-                                        {% endif %}
-                                    </div>
+                                        <p class="card-text"><strong>Delivery Name:</strong> {{ item_status.receipt.delivery_service.username }}</p>
+                                        {% endif %}                                    </div>
                                     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center mt-3 mt-md-0">
                                         <form method="post" action="{% url 'cart:update_cart_item_status' item_status.id %}" class="me-2 mb-2 mb-md-0">
                                             {% csrf_token %}
@@ -80,6 +97,57 @@
                                             </select>
                                             <button type="submit" class="btn btn-primary btn-sm">Ok</button>
                                         </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-light">
+                                <p class="card-text"><small class="text-muted">Order placed on {{ item_status.receipt.date|date:"F j, Y, g:i a" }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <hr>
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2>Order History</h2>
+            {% for item_status in order_history %}
+                <div class="card border-light mb-3 shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-3 col-4">
+                            <img src="{{ item_status.item.image.url }}" class="img-fluid rounded-start" alt="" />
+                        </div>
+                        <div class="col-md-8 col-7">
+                            <div class="card-body">
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                                    <div>
+                                        <h5 class="card-title">{{ item_status.item.title }} x {{ item_status.quantity }}</h5>
+                                        <p class="card-text"><strong>Buyer:</strong> {{ item_status.receipt.buyer.username }}</p>
+                                        <p class="card-text"><strong>Status:</strong>
+                                            {% if item_status.status == 'Pending' %}
+                                                <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
+                                            {% elif item_status.status == 'Ready for Pickup' %}
+                                                <span class="badge bg-info text-dark">{{ item_status.status|title }}</span><br>
+                                                <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#pickupAddressModal{{ item_status.id }}">
+                                                    <i class="bi bi-info-circle"></i> View Pickup Address
+                                                </button>
+                                            {% elif item_status.status == 'Ready for Delivery' %}
+                                                <span class="badge bg-info text-dark">{{ item_status.status|title }}</span>
+                                            {% elif item_status.status == 'Out for Delivery' %}
+                                                <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
+                                            {% elif item_status.status == 'Completed' %}
+                                                <span class="badge bg-success">{{ item_status.status|title }}</span>
+                                            {% elif item_status.status == 'Delivered' %}
+                                                <span class="badge bg-success">{{ item_status.status|title }}</span>
+                                            {% else %}
+                                                <span>{{ item_status.status }}</span>
+                                            {% endif %}
+                                        </p>                                        
+                                        {% if item_status.receipt.delivery_service %}
+                                        <p class="card-text"><strong>Delivery Name:</strong> {{ item_status.receipt.delivery_service.username }}</p>
+                                        {% endif %}                                    
                                     </div>
                                 </div>
                             </div>
