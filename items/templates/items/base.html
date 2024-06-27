@@ -30,12 +30,10 @@
             font-family: "Poppins", sans-serif;
         }
 
-        /* Add more specific selectors as needed */
         h1, h2, h3, h4, h5, h6 {
             font-family: "Poppins", sans-serif;
         }
 
-        /* Custom styles for mobile view */
         @media (max-width: 991px) {
             .location-line {
                 display: block;
@@ -75,7 +73,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 200px; /* Adjust as necessary */
+            max-width: 200px;
         }
     </style>
     {% endblock stylesheets %}
@@ -191,23 +189,20 @@
         }
     }
 
-    // Function to display user's real-time location
     function showUserLocation(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-
-        // Send latitude and longitude to reverse geocoding API
+        //change fech to fetch to enable the geolocation
         fech(`https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=07195a04adabcbd84333f1064079fd4a`)
             .then(response => response.json())
             .then(data => {
-                const userLocation = data[0].name; // Get the name of the user's location
+                const userLocation = data[0].name;
                 document.getElementById("user-location").innerText = " 📍 " + userLocation;
                 document.getElementById("user-location-desktop").innerText = " 📍 " + userLocation + " | ";
             })
             .catch(error => console.log(error));
     }
 
-    // Call the function to get user's real-time location when the page loads
     window.onload = getUserLocation;
 </script>
 </html>

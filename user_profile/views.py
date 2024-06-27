@@ -8,7 +8,6 @@ from .forms import EditProfileForm
 from django.contrib import messages
 from items.models import ItemStatus
 
-
 @login_required(login_url="login")
 def user_profile(request):
     if request.method == 'POST':
@@ -20,7 +19,6 @@ def user_profile(request):
         form = RegisterUserForm(instance=request.user)
 
     return render(request, 'user_profile/profile.html', {'form': form})
-
 
 @login_required(login_url="login")
 def purchase_history(request):

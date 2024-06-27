@@ -27,7 +27,6 @@ class CartItem(models.Model):
         super().save(*args, **kwargs)
 
 
-
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     cart_items = models.ManyToManyField(CartItem, blank=True, related_name="cart_items")

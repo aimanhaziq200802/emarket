@@ -3,7 +3,6 @@ from .models import Item
 from authentication.models import Location
 from items.models import Category
 
-
 class AddItemForm(forms.ModelForm):
     class Meta:
         model = Item

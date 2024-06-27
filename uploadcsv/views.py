@@ -4,8 +4,8 @@ from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CSVUploadForm
-from items.models import Item, Category  # Import your Item and Category models
-from authentication.models import CustomUser  # Import your CustomUser model
+from items.models import Item, Category 
+from authentication.models import CustomUser 
 
 def upload_csv(request):
     if not request.user.is_staff:
@@ -19,7 +19,6 @@ def upload_csv(request):
             reader = csv.DictReader(decoded_file)
 
             for row in reader:
-                # Assuming your CSV has columns: title, description, price, image, category, stock, seller
                 category, created = Category.objects.get_or_create(name=row['category'])
                 seller = CustomUser.objects.get(username=row['seller'])
                 
@@ -32,7 +31,6 @@ def upload_csv(request):
                     seller=seller
                 )
 
-                # Download and save the image
                 image_url = row['image']
                 image_response = requests.get(image_url)
                 if image_response.status_code == 200:

@@ -34,6 +34,4 @@ urlpatterns = [
     path('delivery/', include('delivery.urls')),
     path('seller/', include('seller.urls')),
 
-
-    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

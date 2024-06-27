@@ -8,5 +8,4 @@ urlpatterns = [
     path("purchases/", views.purchase_history, name="purchases"),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
 
-
 ]

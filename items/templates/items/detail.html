@@ -4,7 +4,6 @@
 {{ block.super }}
 <style>
     .custom-image-border {
-        /* border: 1px solid #000000; */
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         max-width: 100%;
@@ -36,7 +35,7 @@
     .price {
         font-size: 2em;
         font-weight: bold;
-        color: #000000; /* Shopee's primary color */
+        color: #000000;
         margin-top: 10px;
     }
     .original-price {
@@ -125,7 +124,7 @@
                         RM{{ item.price|floatformat:2 }}
                     {% endif %}
                 </p>
-                <p class="card-text">Seller: {{ item.seller.username }}</p> <!-- Display seller's username -->
+                <p class="card-text">Seller: {{ item.seller.username }}</p>
                 <span class="badge bg-success"><strong>Sold:</strong> {{ item.sold }}</span>
                 <span class="badge bg-secondary"><strong>Stock:</strong> {{ item.stock }}</span>
                 <span class="badge bg-info text-white mt-2 mb-2 text-wrap">Added: {{ item.time_ago }}</span>

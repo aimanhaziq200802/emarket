@@ -40,9 +40,7 @@ def my_items(request):
 def edit_item(request, item_id):
     item = get_object_or_404(Item, id=item_id)
 
-    # Check if the user has permission to edit this item
     if request.user != item.seller:
-        # You might want to customize this behavior (e.g., show a message, redirect to an error page)
         return redirect('seller:my_items')
 
     if request.method == 'POST':

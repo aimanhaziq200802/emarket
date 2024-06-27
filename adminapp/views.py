@@ -6,9 +6,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-
-
 # Create your views here.
+#Admin dashboard view
 @login_required(login_url="login")
 def admin_dashboard(request):
     categories = Category.objects.all()
@@ -64,7 +63,7 @@ def add_location(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Location added successfully.')
-            return redirect('adminapp:admin_dashboard')  # Redirect to admin dashboard or another page after saving
+            return redirect('adminapp:admin_dashboard') 
     else:
         form = AddLocationForm()
     
@@ -80,7 +79,7 @@ def edit_location(request, location_id):
         if form.is_valid():
             form.save()
             messages.info(request, 'Location changed successfully.')
-            return redirect('adminapp:admin_dashboard')  # Redirect to admin dashboard or another page
+            return redirect('adminapp:admin_dashboard')
     else:
         form = AddLocationForm(instance=location)
     
@@ -92,4 +91,4 @@ def delete_location(request, location_id):
     location = get_object_or_404(Location, id=location_id)
     location.delete()
     messages.error(request, 'Location deleted successfully.')
-    return redirect('adminapp:admin_dashboard')  # Redirect to admin dashboard or another page
+    return redirect('adminapp:admin_dashboard')

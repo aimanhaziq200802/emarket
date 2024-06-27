@@ -1,8 +1,6 @@
 from django.contrib import messages
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-
 from items.models import Item, ItemStatus, PurchaseReceipt
 from .models import Cart, CartItem
 from django.views.decorators.http import require_POST
@@ -11,7 +9,6 @@ from django.http import JsonResponse
 from django.db import models
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-
 
 
 @login_required(login_url="login")
@@ -38,9 +35,6 @@ def add_to_cart(request, item_id):
     cart.save()
     return redirect("cart:cart")
     
-
-
-
 @login_required(login_url="login")
 def remove_from_cart(request, item_id):
     item = Item.objects.get(pk=item_id)
@@ -105,7 +99,7 @@ def purchase(request):
                 item=item,
                 receipt=receipt,
                 status='Pending',
-                quantity=cart_item.quantity  # Transfer quantity
+                quantity=cart_item.quantity
             )
             receipt.items.add(item)
             cart_item.delete()
@@ -119,8 +113,6 @@ def purchase(request):
         return redirect("user_profile:purchases")
 
     return redirect("cart:cart")
-
-
 
 @require_POST
 @login_required(login_url="login")
