@@ -137,3 +137,7 @@ def new_arrivals(request):
         
     items = Item.objects.filter(is_sold=False).order_by('-created_at')[:20]
     return render(request, 'items/new_arrivals.html', {'items': items})
+
+#About view
+def about(request):
+    return render(request, 'items/about.html')

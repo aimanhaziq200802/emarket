@@ -9,5 +9,6 @@ urlpatterns = [
     path("browse/", views.browse, name="browse"),
     path('popular/', views.popular_items, name='popular_items'),
     path('new-arrivals/', views.new_arrivals, name='new_arrivals'), 
+    path('about/', views.about, name='about'), 
 
 ]
