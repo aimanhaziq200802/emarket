@@ -60,8 +60,8 @@ def seller_orders(request):
         messages.error(request, 'You do not have permission to view this page.')
         return redirect('items:index')
 
-    current_orders = ItemStatus.objects.filter(item__seller=request.user).exclude(status__in=['Completed', 'Delivered']).order_by('created_at')
-    order_history = ItemStatus.objects.filter(item__seller=request.user, status__in=['Completed', 'Delivered']).order_by('-created_at')
+    current_orders = ItemStatus.objects.filter(item__seller=request.user).exclude(status__in=['Completed', 'Delivered', 'Ready for Delivery', 'Out for Delivery']).order_by('created_at')
+    order_history = ItemStatus.objects.filter(item__seller=request.user, status__in=['Completed', 'Delivered', 'Ready for Delivery', 'Out for Delivery']).order_by('-created_at')
 
     if not current_orders:
         messages.info(request, 'No current orders found for this seller.')

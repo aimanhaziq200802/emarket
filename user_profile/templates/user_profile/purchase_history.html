@@ -10,11 +10,11 @@
 </header>
 
 {% if messages %}
-  {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}" role="alert">
-      {{ message }}
-    </div>
-  {% endfor %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}" role="alert">
+    {{ message }}
+</div>
+{% endfor %}
 {% endif %}
 
 <div class="container px-4 px-lg-5 mt-5">
@@ -24,15 +24,15 @@
             <div class="fw-bold">{{ receipt.buyer }}</div>
             <div class="text-muted">{{ receipt.date }}</div>
             <div>
-                Order Status: 
+                Order Status:
                 {% if receipt.status == 'Pending' %}
-                    <span class="badge bg-warning text-dark">{{ receipt.status|title }}</span>
+                <span class="badge bg-warning text-dark">{{ receipt.status|title }}</span>
                 {% elif receipt.status == 'Cancelled' %}
-                    <span class="badge bg-danger">{{ receipt.status|title }}</span>
+                <span class="badge bg-danger">{{ receipt.status|title }}</span>
                 {% elif receipt.status == 'Order Received' %}
-                    <span class="badge bg-success">{{ receipt.status|title }}</span>
+                <span class="badge bg-success">{{ receipt.status|title }}</span>
                 {% else %}
-                    <span>{{ receipt.status }}</span>
+                <span>{{ receipt.status }}</span>
                 {% endif %}
             </div>
         </div>
@@ -42,37 +42,42 @@
                 <li>
                     {{ item_status.item.title }} — x {{ item_status.quantity }} —
                     {% if item_status.status == 'Pending' %}
-                        <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
+                    <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
                     {% elif item_status.status == 'Ready for Pickup' %}
-                        <span class="badge bg-info text-dark">{{ item_status.status|title }}</span><br>
-                        <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#pickupAddressModal{{ item_status.id }}">
-                            <i class="bi bi-info-circle"></i> View Pickup Address
-                        </button>
+                    <span class="badge bg-info text-dark">{{ item_status.status|title }}</span><br>
+                    <button type="button" class="btn btn-link p-0" data-bs-toggle="modal"
+                        data-bs-target="#pickupAddressModal{{ item_status.id }}">
+                        <i class="bi bi-info-circle"></i> View Pickup Address
+                    </button>
                     {% elif item_status.status == 'Ready for Delivery' %}
-                        <span class="badge bg-info text-dark">{{ item_status.status|title }}</span>
+                    <span class="badge bg-info text-dark">{{ item_status.status|title }}</span>
                     {% elif item_status.status == 'Out for Delivery' %}
-                        <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
+                    <span class="badge bg-warning text-dark">{{ item_status.status|title }}</span>
                     {% elif item_status.status == 'Completed' %}
-                        <span class="badge bg-success">{{ item_status.status|title }}</span>
+                    <span class="badge bg-success">{{ item_status.status|title }}</span>
                     {% elif item_status.status == 'Delivered' %}
-                        <span class="badge bg-success">{{ item_status.status|title }}</span>
+                    <span class="badge bg-success">{{ item_status.status|title }}</span>
                     {% else %}
-                        <span>{{ item_status.status }}</span>
+                    <span>{{ item_status.status }}</span>
                     {% endif %}
-                    
+
                     <!-- Modal for Pickup Address -->
-                    <div class="modal fade" id="pickupAddressModal{{ item_status.id }}" tabindex="-1" aria-labelledby="pickupAddressModalLabel{{ item_status.id }}" aria-hidden="true">
+                    <div class="modal fade" id="pickupAddressModal{{ item_status.id }}" tabindex="-1"
+                        aria-labelledby="pickupAddressModalLabel{{ item_status.id }}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="pickupAddressModalLabel{{ item_status.id }}">Pickup Address</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h5 class="modal-title" id="pickupAddressModalLabel{{ item_status.id }}">Pickup
+                                        Address</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     {{ item_status.item.seller.address }}
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -87,17 +92,97 @@
         <div class="col-md-2">
             <div class="d-flex justify-content-end">
                 {% if receipt.delivery_service %}
-                    {% if receipt.delivery_service.username %}
-                        <i class="bi bi-truck"></i>&nbsp;{{ receipt.delivery_service.username|capfirst }}
-                    {% else %}
-                        <i class="bi bi-truck"></i>&nbsp;Awaiting Pickup
-                    {% endif %}
+                {% if receipt.delivery_service.username %}
+                <i class="bi bi-truck"></i>&nbsp;{{ receipt.delivery_service.username|capfirst }}
                 {% else %}
-                    <i class="bi bi-person"></i>&nbsp;Self-Pickup 
+                <i class="bi bi-truck"></i>&nbsp;Awaiting Pickup
+                {% endif %}
+                {% else %}
+                <i class="bi bi-person"></i>&nbsp;Self-Pickup
                 {% endif %}
             </div>
         </div>
     </div>
     {% endfor %}
 </div>
+
+<style>
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+
+        /* Increase font sizes */
+        .display-6,
+        h1 {
+            font-size: 1.75rem;
+        }
+
+        /* Adjust columns for receipt details */
+        .row.align-items-center {
+            display: flex;
+        }
+
+        .col-md-3,
+        .col-md-5,
+        .col-md-2 {
+            flex: 1;
+            /* Make columns occupy equal space */
+            margin-bottom: 1rem;
+        }
+
+        /* Increase spacing between elements */
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    /* Responsive images */
+    img {
+        max-width: 100%;
+        /* Set a maximum width for images */
+    }
+
+    /* Adjust button size in modals (optional) */
+    .modal-footer button.btn {
+        padding: 0.5rem 1rem;
+        /* Adjust padding for smaller size */
+    }
+
+        @media only screen and (min-device-width: 820px) and (max-device-width: 1180px) and (orientation: landscape) {
+
+        /* Increase font sizes */
+        .display-6,
+        h1 {
+            font-size: 1.75rem;
+        }
+
+        /* Adjust columns for receipt details */
+        .row.align-items-center {
+            display: flex;
+        }
+
+        .col-md-3,
+        .col-md-5,
+        .col-md-2 {
+            flex: 1;
+            /* Make columns occupy equal space */
+            margin-bottom: 1rem;
+        }
+
+        /* Increase spacing between elements */
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    /* Responsive images */
+    img {
+        max-width: 100%;
+        /* Set a maximum width for images */
+    }
+
+    /* Adjust button size in modals (optional) */
+    .modal-footer button.btn {
+        padding: 0.5rem 1rem;
+        /* Adjust padding for smaller size */
+    }
+</style>
 {% endblock content %}
